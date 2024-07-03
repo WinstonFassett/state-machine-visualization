@@ -1,26 +1,5 @@
 import React, { useEffect, useState } from "react";
-import mermaid from "mermaid";
-mermaid.initialize({
-  // startOnLoad: true
-});
-
-const Mermaid = ({ chart }) => {
-  let node;
-
-  useEffect(() => {
-    // console.log('rendering', chart)
-    mermaid.contentLoaded();
-    node.removeAttribute("data-processed");
-    // console.log('rendered')
-  }, [chart]);
-  if (!chart) return null;
-  return (
-    <div ref={(e) => (node = e)} className="mermaid">
-      {chart}
-    </div>
-  );
-};
-
+import Mermaid from "./Mermaid";
 function toDiagram(definition, value, callbackName) {
   const rows = [];
   Object.keys(definition.states || {}).forEach((key) => {
@@ -55,7 +34,7 @@ export default function StateMachineVisualizer({ definition, value }) {
   const diagram = toDiagram(definition, value, id);
   return (
     <>
-      <Mermaid chart={diagram} />
+      <Mermaid diagram={diagram} />
       {/*<pre>{diagram}</pre>*/}
       {/*<pre>{JSON.stringify(definition, null, 2)}</pre>*/}
     </>

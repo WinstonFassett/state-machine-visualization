@@ -54,7 +54,7 @@ export default function StateForceGraph({
   // let Graph =
 
   useEffect(() => {
-    const Graph = ForceGraph()(ref.current);
+    const Graph = global.ForceGraph()(ref.current);
     ref.current.Graph = Graph;
     Graph.height(300)
       // .linkDirectionalParticles(1)
