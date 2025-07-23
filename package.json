@@ -1,9 +1,21 @@
 {
-  "name": "complex-state-machine-force-graph",
+  "name": "state-machine-visualizers",
   "version": "1.0.0",
-  "description": "",
-  "keywords": [],
-  "main": "src/index.js",
+  "description": "A collection of web components for visualizing state machines.",
+  "keywords": [
+    "state-machine",
+    "visualizer",
+    "web-components"
+  ],
+  "main": "dist/state-force-graph.js",
+  "module": "dist/state-force-graph.js",
+  "files": [
+    "dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/your-repo.git"
+  },
   "dependencies": {
     "mermaid": "10.6.0",
     "react": "16.8.6",
@@ -11,6 +23,14 @@
     "react-scripts": "3.0.1"
   },
   "devDependencies": {
+    "@babel/preset-react": "^7.27.1",
+    "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-commonjs": "^28.0.6",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-replace": "^6.0.2",
+    "rollup": "^4.45.1",
+    "rollup-plugin-postcss": "^4.0.2",
+    "sass": "^1.89.2",
     "typescript": "3.3.3"
   },
   "browser": {
@@ -18,7 +38,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "rollup -c",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },

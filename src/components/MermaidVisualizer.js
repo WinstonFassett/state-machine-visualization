@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Mermaid from "./Mermaid";
+import Mermaid from "./Mermaid.js";
 function toDiagram(definition, value, callbackName) {
   const rows = [];
   Object.keys(definition.states || {}).forEach((key) => {

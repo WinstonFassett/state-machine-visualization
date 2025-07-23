@@ -4,10 +4,16 @@ import { useStateMachine } from "./useStateMachine";
 import { StopwatchMachine } from "./StopwatchMachine";
 import ModeButtons from "./ModeButtons";
 import { reduceHistory } from "./reduceHistory";
-import StateMachineVisualizer from "./StateMachineVisualizer";
-import StateMachineView from "./StateMachineView";
+import { useStateMachine } from "./useStateMachine";
+import { StopwatchMachine } from "./StopwatchMachine";
+import ModeButtons from "./ModeButtons";
+import { reduceHistory } from "./reduceHistory";
+import React, { useEffect, useState } from "react";
+import ReactDOM from "react-dom";
+import "./index-force-graph.js";
+import "./index-basic-visualizer.js";
+import "./index-mermaid-visualizer.js";
 import "./styles.css";
-import "./StateForceGraphComponent";
 
 function Stopwatch() {
   const [lastAction, setLastAction] = useState();
@@ -35,6 +41,7 @@ function Stopwatch() {
   const { states } = StopwatchMachine;
   const mode = states[status] || StopwatchMachine.initialState;
   const graphRef = React.useRef();
+  const basicRef = React.useRef();
 
   useEffect(() => {
     const graph = graphRef.current;
@@ -48,6 +55,19 @@ function Stopwatch() {
       };
     }
   }, [graphRef.current]);
+
+  useEffect(() => {
+    const basic = basicRef.current;
+    if (basic) {
+      const handleDispatch = (e) => {
+        dispatch(e.detail);
+      };
+      basic.addEventListener("dispatch", handleDispatch);
+      return () => {
+        basic.removeEventListener("dispatch", handleDispatch);
+      };
+    }
+  }, [basicRef.current]);
 
   return (
     <>
@@ -80,15 +100,15 @@ function Stopwatch() {
               }}
             ></state-force-graph>
           </div>
-          <StateMachineVisualizer
+          <mermaid-visualizer
+            definition={JSON.stringify(StopwatchMachine)}
             value={status}
-            definition={StopwatchMachine}
-          />
-          <StateMachineView
+          ></mermaid-visualizer>
+          <basic-visualizer
+            ref={basicRef}
+            definition={JSON.stringify(StopwatchMachine)}
             value={status}
-            definition={StopwatchMachine}
-            dispatch={dispatch}
-          />
+          ></basic-visualizer>
           {/* previous={JSON.stringify(previous)} */}
         </div>
         <pre>{JSON.stringify({ status, context }, null, 2)}</pre>
@@ -96,6 +116,20 @@ function Stopwatch() {
     </>
   );
 }
+
+export const buttonStyles = {
+  border: "1px solid #ccc",
+  background: "#fff",
+  fontSize: "2em",
+  padding: 15,
+  margin: 5,
+  width: 200
+};
+
+export default Stopwatch;
+
+const rootElement = document.getElementById("root");
+ReactDOM.render(<Stopwatch />, rootElement);
 
 export const buttonStyles = {
   border: "1px solid #ccc",
