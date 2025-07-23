@@ -1,5 +1,4 @@
-import React from "react";
-import { buttonStyles } from "./index";
+import { buttonStyles } from "./App";
 
 export default function ModeButtons({ mode, dispatch }) {
   return (
