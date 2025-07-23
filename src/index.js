@@ -7,7 +7,7 @@ import { reduceHistory } from "./reduceHistory";
 import StateMachineVisualizer from "./StateMachineVisualizer";
 import StateMachineView from "./StateMachineView";
 import "./styles.css";
-import StateForceGraph from "./StateForceGraph";
+import "./StateForceGraphComponent";
 
 function Stopwatch() {
   const [lastAction, setLastAction] = useState();
@@ -34,6 +34,21 @@ function Stopwatch() {
   const { lapse } = context;
   const { states } = StopwatchMachine;
   const mode = states[status] || StopwatchMachine.initialState;
+  const graphRef = React.useRef();
+
+  useEffect(() => {
+    const graph = graphRef.current;
+    if (graph) {
+      const handleEdgeClick = (e) => {
+        dispatch(e.detail);
+      };
+      graph.addEventListener("edge-click", handleEdgeClick);
+      return () => {
+        graph.removeEventListener("edge-click", handleEdgeClick);
+      };
+    }
+  }, [graphRef.current]);
+
   return (
     <>
       <div className="App">
@@ -49,14 +64,21 @@ function Stopwatch() {
           <div>{status}</div>
           <ModeButtons {...{ mode, dispatch }} />
           <div>
-            <StateForceGraph
+            <state-force-graph
+              ref={graphRef}
               value={status}
-              mode={mode}
-              lastEvent={previous.action}
-              prevState={previous.state}
-              definition={StopwatchMachine}
-              dispatch={dispatch}
-            />
+              prev-state={previous.state}
+              last-event={JSON.stringify(previous.action)}
+              definition={JSON.stringify(StopwatchMachine)}
+              style={{
+                '--node-color': 'grey',
+                '--active-node-color': 'blue',
+                '--link-color': 'lightgrey',
+                '--active-link-color': 'blue',
+                '--transition-color': 'green',
+                '--particle-color': 'green',
+              }}
+            ></state-force-graph>
           </div>
           <StateMachineVisualizer
             value={status}
