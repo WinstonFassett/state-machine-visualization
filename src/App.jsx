@@ -1,4 +1,3 @@
-import ReactDOM from "react-dom";
 import React, { useEffect, useState } from "react";
 import { useStateMachine } from "./useStateMachine";
 import { StopwatchMachine } from "./StopwatchMachine";
@@ -17,7 +16,6 @@ function Stopwatch() {
     null,
     null,
     (state, action) => {
-      // console.log("action", action);
       setLastAction(action);
       return reduceHistory(state, action);
     }
@@ -26,11 +24,8 @@ function Stopwatch() {
     prevState.current = status;
   }, [status]);
   const dispatch = (action) => {
-    // console.log("DISPATCH", action);
-    // prevState.current = status;
     innerDispatch(action);
   };
-  // console.log("last action111", lastAction);
   const { lapse } = context;
   const { states } = StopwatchMachine;
   const mode = states[status] || StopwatchMachine.initialState;
@@ -38,14 +33,7 @@ function Stopwatch() {
     <>
       <div className="App">
         <div style={{ textAlign: "center" }}>
-          <label
-            style={{
-              fontSize: "5em",
-              display: "block"
-            }}
-          >
-            {lapse} ms
-          </label>
+          <label style={{ fontSize: "5em", display: "block" }}>{lapse} ms</label>
           <div>{status}</div>
           <ModeButtons {...{ mode, dispatch }} />
           <div>
@@ -58,16 +46,8 @@ function Stopwatch() {
               dispatch={dispatch}
             />
           </div>
-          <StateMachineVisualizer
-            value={status}
-            definition={StopwatchMachine}
-          />
-          <StateMachineView
-            value={status}
-            definition={StopwatchMachine}
-            dispatch={dispatch}
-          />
-          {/* previous={JSON.stringify(previous)} */}
+          <StateMachineVisualizer value={status} definition={StopwatchMachine} />
+          <StateMachineView value={status} definition={StopwatchMachine} dispatch={dispatch} />
         </div>
         <pre>{JSON.stringify({ status, context }, null, 2)}</pre>
       </div>
@@ -85,6 +65,3 @@ export const buttonStyles = {
 };
 
 export default Stopwatch;
-
-const rootElement = document.getElementById("root");
-ReactDOM.render(<Stopwatch />, rootElement);
